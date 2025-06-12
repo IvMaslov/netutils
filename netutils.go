@@ -81,9 +81,9 @@ func FindIPv4(addrs []net.Addr) netip.Addr {
 }
 
 type InterfaceInfo struct {
-	name     string
-	hardAddr net.HardwareAddr
-	ip       net.IP
+	Name     string
+	HardAddr net.HardwareAddr
+	IP       net.IP
 }
 
 // GetInterfaceInfo gather interface mac and ip address
@@ -106,15 +106,15 @@ func GetInterfaceInfo(name string) (InterfaceInfo, error) {
 
 		if ip.To4() != nil {
 			return InterfaceInfo{
-				name:     name,
-				ip:       ip,
-				hardAddr: i.HardwareAddr,
+				Name:     name,
+				IP:       ip,
+				HardAddr: i.HardwareAddr,
 			}, nil
 		}
 	}
 
 	return InterfaceInfo{
-		hardAddr: i.HardwareAddr,
+		HardAddr: i.HardwareAddr,
 	}, nil
 }
 
@@ -142,9 +142,9 @@ func GetDefaultGatewayInfo(ifce string) (InterfaceInfo, error) {
 			}
 
 			return InterfaceInfo{
-				name:     ifce,
-				ip:       ip,
-				hardAddr: mac,
+				Name:     ifce,
+				IP:       ip,
+				HardAddr: mac,
 			}, nil
 
 		}
