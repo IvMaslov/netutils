@@ -114,11 +114,13 @@ func GetInterfaceInfo(name string) (InterfaceInfo, error) {
 	}
 
 	return InterfaceInfo{
+		Name:     name,
 		HardAddr: i.HardwareAddr,
+		IP:       netip.IPv4Unspecified().AsSlice(),
 	}, nil
 }
 
-// GetDefaultGatewayInfo gather gateway info by interface name
+// GetDefaultGatewayInfo gather gateway info by interface name or empty struct
 func GetDefaultGatewayInfo(ifce string) (InterfaceInfo, error) {
 	data, err := os.ReadFile("/proc/net/arp")
 	if err != nil {
@@ -150,7 +152,10 @@ func GetDefaultGatewayInfo(ifce string) (InterfaceInfo, error) {
 		}
 	}
 
-	return InterfaceInfo{}, nil
+	return InterfaceInfo{
+		Name: ifce,
+		IP:   netip.IPv4Unspecified().AsSlice(),
+	}, nil
 }
 
 func removeExtraSpaces(s string) string {
