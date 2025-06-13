@@ -88,7 +88,9 @@ func GetInterfaceMTU(name string) (int, error) {
 		return 0, fmt.Errorf("failed to open: %w", err)
 	}
 
-	mtu, err := strconv.Atoi(string(data))
+	str := strings.Trim(string(data), "\n")
+
+	mtu, err := strconv.Atoi(str)
 	if err != nil {
 		return 0, fmt.Errorf("failed to convert to int: %w", err)
 	}
