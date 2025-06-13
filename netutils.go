@@ -6,6 +6,7 @@ import (
 	"net"
 	"net/netip"
 	"os"
+	"strconv"
 	"strings"
 	"syscall"
 )
@@ -78,6 +79,21 @@ func FindIPv4(addrs []net.Addr) netip.Addr {
 	}
 
 	return netip.IPv4Unspecified()
+}
+
+// GetInterfaceMTU returns mtu from file '/sys/class/net/<interface>/mtu'
+func GetInterfaceMTU(name string) (int, error) {
+	data, err := os.ReadFile(fmt.Sprintf("/sys/class/net/%s/mtu", name))
+	if err != nil {
+		return 0, fmt.Errorf("failed to open: %w", err)
+	}
+
+	mtu, err := strconv.Atoi(string(data))
+	if err != nil {
+		return 0, fmt.Errorf("failed to convert to int: %w", err)
+	}
+
+	return mtu, nil
 }
 
 type InterfaceInfo struct {
